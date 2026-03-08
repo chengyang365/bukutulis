@@ -1830,6 +1830,16 @@
             <button class="btn-import" id="btnImportJSON" title="Import Notebook (JSON)">Import</button>
             <button class="btn-fullscreen" id="btnFullscreen" title="Skrin Penuh (F)">Penuh</button>
         </div>
+
+        <div class="toolbar-group">
+        <label class="lang-label">Bahasa:</label>
+        <select id="langSelect" class="template-select" onchange="changeLanguage(this.value)">
+        <option value="ms">Bahasa Melayu</option>
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+    </select>
+</div>
+        
     </div>
 
     <!-- Extra Toolbar - Template & Timer -->
@@ -2092,9 +2102,6 @@
     <div style="text-align:center; margin: 15px 0 10px; font-size: 13px; color: #888;">
         Dibina oleh <strong>Cikgu Aime</strong> untuk guru-guru Malaysia
         <span style="margin: 0 8px;">|</span>
-        <a href="https://buymeacoffee.com/cikguaime" target="_blank" rel="noopener noreferrer" style="color: #ff813f; text-decoration: none; font-weight: 600;">
-            ☕ Belanja saya kopi
-        </a>
     </div>
 
     <script>
@@ -7540,6 +7547,168 @@ PENTING: JSON sahaja. Nota belajar berkualiti, BUKAN salin teks mentah. Setiap b
         });
 
         window.addEventListener('beforeunload', () => saveToLocalStorage());
+
+        // ==================== LANGUAGE SWITCHER (多语言切换) ====================
+const translations = {
+    ms: {
+        cursor: ["Cursor", "Mod Cursor (C)"],
+        pen: ["Pen", "Mod Pen (P)"],
+        text: ["Teks", "Mod Teks (T)"],
+        shape: ["Bentuk", "Mod Bentuk (B)"],
+        table: ["Jadual", "Mod Jadual (J)"],
+        eraser: ["Pemadam", "Pemadam (E)"],
+        clear: ["Kosongkan", "Padam semua lukisan"],
+        color: "Warna:",
+        size: "Saiz:",
+        saveExport: "Simpan & Eksport:",
+        saveImage: "Simpan Imej",
+        export: "Eksport",
+        import: "Import",
+        openPdf: "Buka PDF",
+        template: "Pilih Templat:",
+        tplBiasa: "Garis Biasa",
+        tpl4Suku: "Garis 4 Suku",
+        tplGrid: "Buku Petak",
+        tplKosong: "Kosong",
+        time: "Masa:",
+        start: "Mula",
+        pause: "Jeda",
+        reset: "Semula",
+        page: "Muka Surat:",
+        addPage: "Tambah Muka",
+        delPage: "Padam Muka",
+        title: "Tajuk:",
+        date: "Tarikh:",
+        day: "Hari:",
+        langLabel: "Bahasa:"
+    },
+    zh: {
+        cursor: ["光标", "光标模式 (C)"],
+        pen: ["画笔", "画笔模式 (P)"],
+        text: ["文字", "文字模式 (T)"],
+        shape: ["形状", "形状模式 (B)"],
+        table: ["表格", "表格模式 (J)"],
+        eraser: ["橡皮擦", "橡皮擦 (E)"],
+        clear: ["清空", "清除所有绘图"],
+        color: "颜色:",
+        size: "大小:",
+        saveExport: "保存与导出:",
+        saveImage: "保存图片",
+        export: "导出文件",
+        import: "导入文件",
+        openPdf: "打开 PDF",
+        template: "选择模板:",
+        tplBiasa: "普通线条",
+        tpl4Suku: "四线格",
+        tplGrid: "网格",
+        tplKosong: "空白",
+        time: "时间:",
+        start: "开始",
+        pause: "暂停",
+        reset: "重置",
+        page: "页面:",
+        addPage: "添加页面",
+        delPage: "删除页面",
+        title: "标题:",
+        date: "日期:",
+        day: "星期:",
+        langLabel: "语言:"
+    },
+    en: {
+        cursor: ["Cursor", "Cursor Mode (C)"],
+        pen: ["Pen", "Pen Mode (P)"],
+        text: ["Text", "Text Mode (T)"],
+        shape: ["Shape", "Shape Mode (B)"],
+        table: ["Table", "Table Mode (J)"],
+        eraser: ["Eraser", "Eraser (E)"],
+        clear: ["Clear", "Clear all drawings"],
+        color: "Color:",
+        size: "Size:",
+        saveExport: "Save & Export:",
+        saveImage: "Save Image",
+        export: "Export",
+        import: "Import",
+        openPdf: "Open PDF",
+        template: "Select Template:",
+        tplBiasa: "Normal Lines",
+        tpl4Suku: "4-Line Grid",
+        tplGrid: "Grid Book",
+        tplKosong: "Blank",
+        time: "Time:",
+        start: "Start",
+        pause: "Pause",
+        reset: "Reset",
+        page: "Page:",
+        addPage: "Add Page",
+        delPage: "Delete Page",
+        title: "Title:",
+        date: "Date:",
+        day: "Day:",
+        langLabel: "Language:"
+    }
+};
+
+function changeLanguage(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    
+    // 1. 替换有 ID 的按钮文本和提示语
+    const updateBtn = (id, data) => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = data[0]; el.title = data[1]; }
+    };
+    updateBtn('btnCursor', t.cursor);
+    updateBtn('btnPen', t.pen);
+    updateBtn('btnText', t.text);
+    updateBtn('btnShape', t.shape);
+    updateBtn('btnTable', t.table);
+    updateBtn('btnEraser', t.eraser);
+    updateBtn('btnClear', t.clear);
+    
+    // 2. 替换特定类名的按钮文本
+    const updateByClass = (cls, text) => {
+        const elements = document.querySelectorAll('.' + cls);
+        elements.forEach(el => el.textContent = text);
+    };
+    updateByClass('btn-save', t.saveImage);
+    updateByClass('btn-export', t.export);
+    updateByClass('btn-import', t.import);
+    updateByClass('btn-pdf', t.openPdf);
+    updateByClass('timer-btn.start', t.start);
+    updateByClass('timer-btn.pause', t.pause);
+    updateByClass('timer-btn.reset', t.reset);
+    updateByClass('btn-add-page', t.addPage);
+    updateByClass('btn-delete-page', t.delPage);
+
+    // 3. 替换工具栏上的文本标签 (Label)
+    const labels = document.querySelectorAll('.toolbar-group label, .extra-toolbar label');
+    labels.forEach(lbl => {
+        const txt = lbl.textContent.toLowerCase();
+        if (txt.includes('warna') || txt.includes('color') || txt.includes('颜色')) lbl.textContent = t.color;
+        if (txt.includes('saiz') || txt.includes('size') || txt.includes('大小')) lbl.textContent = t.size;
+        if (txt.includes('simpan') || txt.includes('save') || txt.includes('保存')) lbl.textContent = t.saveExport;
+        if (txt.includes('templat') || txt.includes('template') || txt.includes('模板')) lbl.textContent = t.template;
+        if (txt.includes('masa') || txt.includes('time') || txt.includes('时间')) lbl.textContent = t.time;
+        if (txt.includes('bahasa') || txt.includes('language') || txt.includes('语言')) lbl.textContent = t.langLabel;
+    });
+
+    // 4. 替换笔记本内容上方的表单标签 (Title, Date, Day)
+    const headerLabels = document.querySelectorAll('.header-label');
+    if (headerLabels.length >= 3) {
+        headerLabels[0].textContent = t.title;
+        headerLabels[1].textContent = t.date;
+        headerLabels[2].textContent = t.day;
+    }
+
+    // 5. 替换模板选择下拉框内的选项
+    const tplSel = document.getElementById('templateSelect');
+    if (tplSel && tplSel.options.length >= 4) {
+        tplSel.options[0].textContent = t.tplBiasa;
+        tplSel.options[1].textContent = t.tpl4Suku;
+        tplSel.options[2].textContent = t.tplGrid;
+        tplSel.options[3].textContent = t.tplKosong;
+    }
+}
     </script>
 </body>
 </html>
