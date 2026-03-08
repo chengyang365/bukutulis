@@ -7548,7 +7548,7 @@ PENTING: JSON sahaja. Nota belajar berkualiti, BUKAN salin teks mentah. Setiap b
 
         window.addEventListener('beforeunload', () => saveToLocalStorage());
 
-        // ==================== LANGUAGE SWITCHER (多语言切换) ====================
+// ==================== LANGUAGE SWITCHER (多语言切换) ====================
 const translations = {
     ms: {
         cursor: ["Cursor", "Mod Cursor (C)"],
@@ -7577,10 +7577,14 @@ const translations = {
         page: "Muka Surat:",
         addPage: "Tambah Muka",
         delPage: "Padam Muka",
-        title: "Tajuk:",
-        date: "Tarikh:",
-        day: "Hari:",
-        langLabel: "Bahasa:"
+        langLabel: "Bahasa:",
+        // Header Text
+        title: "Tajuk: ",
+        date: "Tarikh: ",
+        day: "Hari: ",
+        titlePH: "Taip tajuk di sini...",
+        datePH: "HH/BB/TTTT",
+        dayPH: "Isnin"
     },
     zh: {
         cursor: ["光标", "光标模式 (C)"],
@@ -7609,10 +7613,14 @@ const translations = {
         page: "页面:",
         addPage: "添加页面",
         delPage: "删除页面",
-        title: "标题:",
-        date: "日期:",
-        day: "星期:",
-        langLabel: "语言:"
+        langLabel: "语言:",
+        // Header Text
+        title: "标题: ",
+        date: "日期: ",
+        day: "星期: ",
+        titlePH: "在此输入标题...",
+        datePH: "日/月/年",
+        dayPH: "星期一"
     },
     en: {
         cursor: ["Cursor", "Cursor Mode (C)"],
@@ -7641,10 +7649,14 @@ const translations = {
         page: "Page:",
         addPage: "Add Page",
         delPage: "Delete Page",
-        title: "Title:",
-        date: "Date:",
-        day: "Day:",
-        langLabel: "Language:"
+        langLabel: "Language:",
+        // Header Text
+        title: "Title: ",
+        date: "Date: ",
+        day: "Day: ",
+        titlePH: "Type title here...",
+        datePH: "DD/MM/YYYY",
+        dayPH: "Monday"
     }
 };
 
@@ -7692,13 +7704,20 @@ function changeLanguage(lang) {
         if (txt.includes('bahasa') || txt.includes('language') || txt.includes('语言')) lbl.textContent = t.langLabel;
     });
 
-    // 4. 替换笔记本内容上方的表单标签 (Title, Date, Day)
-    const headerLabels = document.querySelectorAll('.header-label');
-    if (headerLabels.length >= 3) {
-        headerLabels[0].textContent = t.title;
-        headerLabels[1].textContent = t.date;
-        headerLabels[2].textContent = t.day;
-    }
+    // 4. 替换笔记本内容上方的表单标签 (Title, Date, Day) 和 Placeholder
+    const elTajuk = document.getElementById('lblTajuk');
+    if (elTajuk) elTajuk.textContent = t.title;
+    const elTarikh = document.getElementById('lblTarikh');
+    if (elTarikh) elTarikh.textContent = t.date;
+    const elHari = document.getElementById('lblHari');
+    if (elHari) elHari.textContent = t.day;
+
+    const inputTajuk = document.getElementById('inputTajuk');
+    if (inputTajuk) inputTajuk.placeholder = t.titlePH;
+    const inputTarikh = document.getElementById('inputTarikh');
+    if (inputTarikh) inputTarikh.placeholder = t.datePH;
+    const inputHari = document.getElementById('inputHari');
+    if (inputHari) inputHari.placeholder = t.dayPH;
 
     // 5. 替换模板选择下拉框内的选项
     const tplSel = document.getElementById('templateSelect');
